@@ -1,0 +1,36 @@
+version: 2.1
+
+jobs:
+  setup_dependicies:
+    docker:
+      - image: circleci/python:3.8.3
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps-{{ checksum "requirements.lock" }}
+      - run:
+        command: |
+          pip install --user -r requirements.lock
+      - save_cache: 
+          key: deps-{{ checksum "requirements.lock" }}
+          paths:
+            - "~/.local"
+  test:
+    docker:
+      - image: circleci/python:3.8.3
+      steps:
+      - checkout
+      - restore_cache:
+          key: deps-{{ checksum "requirements.lock" }}
+      - run:
+        command: |
+         python -m unittest -v
+workflows:
+  version: 2
+  all:
+    jobs:
+      - setup_dependicies
+      - test:
+        requires:
+        - setup_dependicies
+    
