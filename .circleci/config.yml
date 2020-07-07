@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  setup_dependicies:
+  setup_dependencies:
     docker:
       - image: circleci/python:3.8.3
     steps:
@@ -29,8 +29,8 @@ workflows:
   version: 2
   all:
     jobs:
-      - setup_dependicies
+      - setup_dependencies
       - test:
         requires:
-        - setup_dependicies
+        - setup_dependencies
     
